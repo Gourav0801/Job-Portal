@@ -8,9 +8,6 @@
 node_modules/
 **/node_modules/
 
-# Build files
-dist/
-build/
 
 # Logs
 *.log
@@ -29,3 +26,10 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+
+
+
+# Build files
+**/dist/
+**/build/
