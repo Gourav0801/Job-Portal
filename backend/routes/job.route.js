@@ -1,13 +1,40 @@
+
 import express from "express";
+
+import {
+    getAdminJobs,
+    getAllJobs,
+    getJobById,
+    postJob
+} from "../controllers/job.controller.js";
+
 import isAuthenticated from "../middlewares/isAuthenticated.js";
-import { getAdminJobs, getAllJobs, getJobById, postJob } from "../controllers/job.controller.js";
+import authorizeRoles from "../middlewares/authorizeRoles.js";
 
 const router = express.Router();
 
-router.route("/post").post(isAuthenticated, postJob);
-router.route("/get").get(isAuthenticated, getAllJobs);
-router.route("/getadminjobs").get(isAuthenticated, getAdminJobs);
-router.route("/get/:id").get(isAuthenticated, getJobById);
+// Recruiter only
+router.route("/post").post(
+    isAuthenticated,
+    authorizeRoles("recruiter"),
+    postJob
+);
+
+router.route("/getadminjobs").get(
+    isAuthenticated,
+    authorizeRoles("recruiter"),
+    getAdminJobs
+);
+
+// Both students and recruiters can browse jobs
+router.route("/get").get(
+    isAuthenticated,
+    getAllJobs
+);
+
+router.route("/get/:id").get(
+    isAuthenticated,
+    getJobById
+);
 
 export default router;
-
